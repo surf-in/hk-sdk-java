@@ -1,6 +1,13 @@
 package com.surfin.hubkit.models;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
+import com.surfin.hubkit.HKManager;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Physical device containing a set of electronic components for measurements (Sensors)
@@ -74,4 +81,55 @@ public class HKDevice
      */
     @SerializedName("activated")
     public boolean  activated;
+
+    private Map<String, String> asMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("identifier", identifier);
+        map.put("name", name);
+        map.put("factoryTest", factoryTest);
+        map.put("macAddress", macAddress);
+        map.put("hardwareVersion", hardwareVersion);
+        map.put("firmwareVersion", firmwareVersion);
+        map.put("manualMode", String.valueOf(manualMode));
+        map.put("latitude", String.valueOf(latitude));
+        map.put("longitude", String.valueOf(longitude));
+        map.put("sensorType", sensorType);
+        map.put("battery", String.valueOf(battery));
+        map.put("activated", String.valueOf(activated));
+
+        return map;
+    }
+
+    /**
+     * Get the device for the given identifier
+     */
+    public static void  get(@NonNull String indentifier, @NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
+        HKManager.defaultInstance.get("devices/" + indentifier, null, onSuccess, onFailure);
+    }
+
+    /**
+     * Create a new session
+     */
+    public static void  create(@NonNull HKDevice device, @NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
+        Map<String, String> params = device.asMap();
+        params.remove("identifier");
+        params.remove("activated");
+        params.put("manualMode", String.valueOf(true));
+
+        HKManager.defaultInstance.post("devices", device.asMap(), null, onSuccess, onFailure); //TODO encoding
+    }
+
+    /**
+     * Update this device
+     */
+    public void         update(@NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
+        HKManager.defaultInstance.patch("devices/" + identifier, asMap(), onSuccess, onFailure);
+    }
+
+    /**
+     * Activate this device
+     */
+    public void         activate(@NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
+        HKManager.defaultInstance.patch("devices/" + identifier + "/activate", null, onSuccess, onFailure);
+    }
 }
