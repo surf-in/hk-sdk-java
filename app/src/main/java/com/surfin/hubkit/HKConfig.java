@@ -13,11 +13,6 @@ import java.util.Map;
  */
 public class HKConfig {
 
-    private static final Pair<String, String>   HEADER_ACCEPT       = new Pair<>("Accept", "application/json");
-    private static final Pair<String, String>   HEADER_CONTENT_TYPE = new Pair<>("Content-Type", "application/json");
-    private static final Pair<String, String>   HEADER_API_KEY      = new Pair<>("apikey", "");
-    private static final Pair<String, String>   HEADER_AUTH         = new Pair<>("Authorization", "Bearer ");
-
     /**
      * Available api versions
      */
@@ -86,11 +81,11 @@ public class HKConfig {
      */
     public static Map<String, String>   getHeaders(@Nullable HKToken token) {
         Map<String, String> headers = new HashMap<>();
-        headers.put(HEADER_ACCEPT.first, HEADER_ACCEPT.second);
-        headers.put(HEADER_CONTENT_TYPE.first, HEADER_CONTENT_TYPE.second);
+        headers.put("Accept", "application/json");
+        headers.put("Content-Type", "application/json");
         if (token != null) {
-            if (token.apiKey != null && !token.apiKey.isEmpty()) headers.put(HEADER_API_KEY.first, HEADER_API_KEY.second + token.apiKey);
-            else if (token.jwt != null && !token.jwt.isEmpty()) headers.put(HEADER_AUTH.first, HEADER_AUTH.second + token.jwt);
+            if (token.apiKey != null && !token.apiKey.isEmpty()) headers.put("apikey", token.apiKey);
+            else if (token.jwt != null && !token.jwt.isEmpty()) headers.put("Authorization", "Bearer " + token.jwt);
         }
 
         return headers;

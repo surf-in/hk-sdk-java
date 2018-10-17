@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Base object
  */
-public abstract class HKBase {
+abstract class HKBase {
 
     /**
      * Unique identifier

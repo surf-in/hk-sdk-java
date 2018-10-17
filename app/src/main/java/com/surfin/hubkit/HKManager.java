@@ -42,7 +42,7 @@ public class HKManager {
      */
     public String   getBaseUrl() {
         if (config == null) return "";
-        return String.format("%s/api/%s", config.getEnvironment().baseUrl, config.getVersion().version);
+        return String.format("%s/api/%s/", config.getEnvironment().baseUrl, config.getVersion().version);
     }
 
     /**
@@ -60,7 +60,7 @@ public class HKManager {
      * @param token new token
      */
     public void     setToken(HKToken token) {
-        if (token != null) buildRetrofitInstance(token);
+        buildRetrofitInstance(token);
     }
 
     /*
@@ -80,7 +80,7 @@ public class HKManager {
     }
 
 
-    public <T> void post(String action, Map<String, String> params, Consumer<T> onSuccess, Consumer<Error> onError) { //TODO encoding
+    public <T> void post(String action, Map<String, String> params, Consumer<T> onSuccess, Consumer<Error> onError) {
         Call<T> call = buildService(Services.post.class).load("/" + action, params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
@@ -172,7 +172,4 @@ public class HKManager {
 
         return GsonConverterFactory.create(gson);
     }
-
-//    private(set) var manager: SessionManager = SessionManager.default //TODO ?
-
 }
