@@ -35,7 +35,7 @@ public class HKToken
         params.put("_username", username);
         params.put("_password", password);
 
-        HKManager.defaultInstance.post("login_check", params, null, onSuccess, onFailure);
+        HKManager.defaultInstance.post("login_check", params, onSuccess, onFailure);
     }
 
     /**

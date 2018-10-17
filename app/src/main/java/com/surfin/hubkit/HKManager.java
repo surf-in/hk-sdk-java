@@ -80,7 +80,7 @@ public class HKManager {
     }
 
 
-    public <T> void post(String action, Map<String, String> params, Object encoding, Consumer<T> onSuccess, Consumer<Error> onError) { //TODO encoding
+    public <T> void post(String action, Map<String, String> params, Consumer<T> onSuccess, Consumer<Error> onError) { //TODO encoding
         Call<T> call = buildService(Services.post.class).load("/" + action, params);
 
         call.enqueue(createAPICallback(onSuccess, onError));

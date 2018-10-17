@@ -17,6 +17,12 @@ public class HKDevice
 {
 
     /**
+     * Device's UUID
+     */
+    @SerializedName("externalIdentifier")
+    public String   externalUUID;
+
+    /**
      * Name of the device
      */
     @SerializedName("name")
@@ -85,6 +91,7 @@ public class HKDevice
     private Map<String, String> asMap() {
         Map<String, String> map = new HashMap<>();
         map.put("identifier", identifier);
+        map.put("externalIdentifier", externalUUID);
         map.put("name", name);
         map.put("factoryTest", factoryTest);
         map.put("macAddress", macAddress);
@@ -111,12 +118,7 @@ public class HKDevice
      * Create a new session
      */
     public static void  create(@NonNull HKDevice device, @NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
-        Map<String, String> params = device.asMap();
-        params.remove("identifier");
-        params.remove("activated");
-        params.put("manualMode", String.valueOf(true));
-
-        HKManager.defaultInstance.post("devices", device.asMap(), null, onSuccess, onFailure); //TODO encoding
+        HKManager.defaultInstance.post("devices", device.asMap(), onSuccess, onFailure); //TODO encoding
     }
 
     /**

@@ -33,12 +33,6 @@ public class HKSession
     public String   project;
 
     /**
-     * Unique identifier of the activity this session is associated with
-     */
-    @SerializedName("activity")
-    public String   activity;
-
-    /**
      * Session capture date
      */
     @SerializedName("capturedAt")
@@ -54,15 +48,13 @@ public class HKSession
     /**
      * Create new session
      */
-    public static void  create(@NonNull HKProject project, @NonNull HKActivity activity, @NonNull Date capturedAt, @NonNull Consumer<HKSession> onSuccess, @NonNull Consumer<Error> onFailure) {
+    public static void  create(@NonNull HKProject project, @NonNull Date capturedAt, @NonNull Consumer<HKSession> onSuccess, @NonNull Consumer<Error> onFailure) {
         Map<String, String> params = new HashMap<>();
         params.put("project", project.identifier);
-        params.put("activity", activity.identifier);
-        params.put("state", "NEW");
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
         params.put("capturedAt", f.format(capturedAt));
 
-        HKManager.defaultInstance.post("sessions", params, null, onSuccess, onFailure);
+        HKManager.defaultInstance.post("sessions", params, onSuccess, onFailure);
     }
 
     /**

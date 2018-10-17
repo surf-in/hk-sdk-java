@@ -22,6 +22,12 @@ public class HKProject
     public String   name;
 
     /**
+     * The activity this session is associated with
+     */
+    @SerializedName("activity")
+    public HKActivity   activity;
+
+    /**
      * Project attached devices
      */
     @SerializedName("devices")
