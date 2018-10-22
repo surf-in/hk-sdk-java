@@ -1,21 +1,9 @@
 package com.surfin.hubkit;
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.surfin.hubkit.models.HKToken;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-public class HKFixtures {
+class HKFixtures {
 
     static String   account() {
         return "{\"identifier\":\"d039c7a3-c514-43a9-b502-59bd02c57e38\"," +

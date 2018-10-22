@@ -1,9 +1,8 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.surfin.hubkit.HKManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,7 +47,7 @@ public class HKSession
      * Get all sessions
      */
     public static void  all(@NonNull Consumer<List<HKSession>> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("sessions", null, onSuccess, onFailure);
+        HKManager.defaultInstance.getSessionList(onSuccess, onFailure);
     }
 
     /**
@@ -61,20 +60,20 @@ public class HKSession
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
         params.put("capturedAt", f.format(capturedAt));
 
-        HKManager.defaultInstance.post("sessions", params, onSuccess, onFailure);
+        HKManager.defaultInstance.postSession(params, onSuccess, onFailure);
     }
 
     /**
      * Get session for the given identifier
      */
     public static void  get(@NonNull String identifier, @NonNull Consumer<HKSession> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("sessions/" + identifier, null, onSuccess, onFailure);
+        HKManager.defaultInstance.getSession(identifier, onSuccess, onFailure);
     }
 
     /**
      * Change a session state to ready
      */
     public void  ready(@NonNull Consumer<HKSession> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.patch("sessions/" + identifier + "/ready", null, onSuccess, onFailure);
+        HKManager.defaultInstance.updateSession(identifier, onSuccess, onFailure);
     }
 }

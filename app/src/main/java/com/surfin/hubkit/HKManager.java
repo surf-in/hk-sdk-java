@@ -4,11 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.surfin.hubkit.callbacks.ProgressRequestBody;
-import com.surfin.hubkit.models.HKFile;
-import com.surfin.hubkit.models.HKToken;
 
-import java.net.HttpURLConnection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -16,6 +13,7 @@ import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,9 +28,10 @@ public class HKManager {
     public static final HKManager defaultInstance = new HKManager();
 
     private HKConfig    config = new HKConfig(HKConfig.ApiEnvironment.DEV, HKConfig.ApiVersion.V1);
+    private HKToken     tokens = null;
 
     public HKManager() {
-        buildRetrofitInstance(null);
+        buildRetrofitInstance();
     }
 
     /**
@@ -52,6 +51,7 @@ public class HKManager {
      */
     public void     setConfig(@NonNull HKConfig config) {
         this.config = config;
+        buildRetrofitInstance();
     }
 
     /**
@@ -60,7 +60,8 @@ public class HKManager {
      * @param token new token
      */
     public void     setToken(HKToken token) {
-        buildRetrofitInstance(token);
+        this.tokens = token;
+        buildRetrofitInstance();
     }
 
     /*
@@ -69,41 +70,107 @@ public class HKManager {
 
      */
 
-    public <T> void upload(String action, Map<String, String> params, HKFile file, Consumer<Double> onProgress, Consumer<T> onSuccess, Consumer<Error> onError) {
+    void uploadRawDatas(Map<String, String> params, HKFile file, Consumer<Double> onProgress, Consumer<HKRawData> onSuccess, Consumer<Error> onError) {
         ProgressRequestBody.UploadCallbacks callback = onProgress::accept;
         ProgressRequestBody fileBody = new ProgressRequestBody(file.file, file.mimetype, callback);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.filename, fileBody);
 
-        Call<T> call = buildService(Services.upload.class).load("/" + action, filePart, params);
+        Call<HKRawData> call = buildService(Services.uploadRawData.class).load(filePart, params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
-
-    public <T> void post(String action, Map<String, String> params, Consumer<T> onSuccess, Consumer<Error> onError) {
-        Call<T> call = buildService(Services.post.class).load("/" + action, params);
-
-        call.enqueue(createAPICallback(onSuccess, onError));
-    }
-
-    public <T> void get(String action, Map<String, String> params, Consumer<T> onSuccess, Consumer<Error> onError) {
-        Call<T> call = buildService(Services.get.class).load("/" + action, params);
+    void auth(Map<String, String> params, Consumer<HKToken> onSuccess, Consumer<Error> onError) {
+        Call<HKToken> call = buildService(Services.auth.class).load(params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
-    public <T> void patch(String action, Map<String, String> params, Consumer<T> onSuccess, Consumer<Error> onError) {
-        Call<T> call = buildService(Services.patch.class).load("/" + action, params);
+    void getMe(Consumer<HKAccount> onSuccess, Consumer<Error> onError) {
+        Call<HKAccount> call = buildService(Services.getMe.class).load();
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void getActivity(String identifier, Consumer<HKActivity> onSuccess, Consumer<Error> onError) {
+        Call<HKActivity> call = buildService(Services.getActivity.class).load(identifier);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void getActivityList(Consumer<List<HKActivity>> onSuccess, Consumer<Error> onError) {
+        Call<List<HKActivity>> call = buildService(Services.getActivityList.class).load();
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void getDevice(String identifier, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
+        Call<HKDevice> call = buildService(Services.getDevice.class).load(identifier);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void createDevice(Map<String, String> params, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
+        Call<HKDevice> call = buildService(Services.postDevice.class).load(params);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void updateDevice(String identifier, Map<String, String> params, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
+        Call<HKDevice> call = buildService(Services.updateDevice.class).load(identifier, params);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void activateDevice(String identifier, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
+        Call<HKDevice> call = buildService(Services.patchDevice.class).load(identifier);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void getProject(String identifier, Consumer<HKProject> onSuccess, Consumer<Error> onError) {
+        Call<HKProject> call = buildService(Services.getProject.class).load(identifier);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void getRawDataList(Consumer<List<HKRawData>> onSuccess, Consumer<Error> onError) {
+        Call<List<HKRawData>> call = buildService(Services.getRawDataList.class).load();
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void getSession(String identifier, Consumer<HKSession> onSuccess, Consumer<Error> onError) {
+        Call<HKSession> call = buildService(Services.getSession.class).load(identifier);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void getSessionList(Consumer<List<HKSession>> onSuccess, Consumer<Error> onError) {
+        Call<List<HKSession>> call = buildService(Services.getSessionList.class).load();
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void postSession(Map<String, String> params, Consumer<HKSession> onSuccess, Consumer<Error> onError) {
+        Call<HKSession> call = buildService(Services.postSession.class).load(params);
+
+        call.enqueue(createAPICallback(onSuccess, onError));
+    }
+
+    void updateSession(String identifier, Consumer<HKSession> onSuccess, Consumer<Error> onError) {
+        Call<HKSession> call = buildService(Services.patchSession.class).load(identifier);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     private Retrofit    retrofit;
 
-    private void buildRetrofitInstance(HKToken token) {
+    private void buildRetrofitInstance() {
         OkHttpClient client = new OkHttpClient
                 .Builder()
-                .addInterceptor(buildHeadersInterceptor(HKConfig.getHeaders(token)))
+                .addInterceptor(buildHeadersInterceptor(HKConfig.getHeaders(tokens)))
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
 
         retrofit = new Retrofit.Builder()

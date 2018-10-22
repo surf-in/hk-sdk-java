@@ -1,4 +1,4 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import java.io.File;
 

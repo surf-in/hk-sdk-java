@@ -1,9 +1,8 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.surfin.hubkit.HKManager;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -24,14 +23,14 @@ public class HKActivity
     /**
      * Get the activity for the given identifier
      */
-    public static void  get(@NonNull String indentifier, @NonNull Consumer<HKActivity> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("activities/" + indentifier, null, onSuccess, onFailure); //TODO params
+    public static void  get(@NonNull String identifier, @NonNull Consumer<HKActivity> onSuccess, @NonNull Consumer<Error> onFailure) {
+        HKManager.defaultInstance.getActivity(identifier, onSuccess, onFailure);
     }
 
     /**
      * Get all activities from HubKit
      */
     public static void  all(@NonNull Consumer<List<HKActivity>> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("activities", null, onSuccess, onFailure); //TODO params
+        HKManager.defaultInstance.getActivityList(onSuccess, onFailure);
     }
 }

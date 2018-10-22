@@ -1,9 +1,8 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.surfin.hubkit.HKManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class HKToken
         params.put("_username", username);
         params.put("_password", password);
 
-        HKManager.defaultInstance.post("login_check", params, onSuccess, onFailure);
+        HKManager.defaultInstance.auth(params, onSuccess, onFailure);
     }
 
     /**

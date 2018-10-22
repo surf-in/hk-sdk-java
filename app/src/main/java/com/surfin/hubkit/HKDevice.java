@@ -1,9 +1,8 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.surfin.hubkit.HKManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -110,28 +109,28 @@ public class HKDevice
     /**
      * Get the device for the given identifier
      */
-    public static void  get(@NonNull String indentifier, @NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("devices/" + indentifier, null, onSuccess, onFailure);
+    public static void  get(@NonNull String identifier, @NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
+        HKManager.defaultInstance.getDevice(identifier, onSuccess, onFailure);
     }
 
     /**
      * Create a new session
      */
     public static void  create(@NonNull HKDevice device, @NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.post("devices", device.asMap(), onSuccess, onFailure); //TODO encoding
+        HKManager.defaultInstance.createDevice(device.asMap(), onSuccess, onFailure);
     }
 
     /**
      * Update this device
      */
     public void         update(@NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.patch("devices/" + identifier, asMap(), onSuccess, onFailure);
+        HKManager.defaultInstance.updateDevice(identifier, asMap(), onSuccess, onFailure);
     }
 
     /**
      * Activate this device
      */
     public void         activate(@NonNull Consumer<HKDevice> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.patch("devices/" + identifier + "/activate", null, onSuccess, onFailure);
+        HKManager.defaultInstance.activateDevice(identifier, onSuccess, onFailure);
     }
 }

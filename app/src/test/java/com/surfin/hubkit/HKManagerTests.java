@@ -1,7 +1,6 @@
 package com.surfin.hubkit;
 
 import com.google.gson.Gson;
-import com.surfin.hubkit.models.HKToken;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +14,8 @@ import static org.junit.Assert.assertNull;
 
 public class HKManagerTests {
 
-    private Gson    gson;
-    private HKManager apiManager;
+    private Gson        gson;
+    private HKManager   apiManager;
 
     @Before
     public void setUp() {

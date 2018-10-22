@@ -1,9 +1,8 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.surfin.hubkit.HKManager;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,6 +30,6 @@ public class HKAccount
      * get currently authenticated user
      */
     public static void  me(@NonNull Consumer<HKAccount> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("me", null, onSuccess, onFailure);
+        HKManager.defaultInstance.getMe(onSuccess, onFailure);
     }
 }

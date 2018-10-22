@@ -1,9 +1,8 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.surfin.hubkit.HKManager;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -37,6 +36,6 @@ public class HKProject
      * Get project for the given identifier
      */
     public static void  get(@NonNull String identifier, @NonNull Consumer<HKProject> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("projects/" + identifier, null, onSuccess, onFailure);
+        HKManager.defaultInstance.getProject(identifier, onSuccess, onFailure);
     }
 }

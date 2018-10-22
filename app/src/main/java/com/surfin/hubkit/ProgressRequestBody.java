@@ -1,4 +1,4 @@
-package com.surfin.hubkit.callbacks;
+package com.surfin.hubkit;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -75,7 +75,7 @@ public class ProgressRequestBody
         private long mUploaded;
         private long mTotal;
 
-        public ProgressUpdater(long uploaded, long total) {
+        ProgressUpdater(long uploaded, long total) {
             mUploaded = uploaded;
             mTotal = total;
         }

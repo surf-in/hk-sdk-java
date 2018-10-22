@@ -1,9 +1,8 @@
-package com.surfin.hubkit.models;
+package com.surfin.hubkit;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.surfin.hubkit.HKManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,7 @@ public class HKRawData
      * Get all raw data
      */
     public static void  all(@NonNull Consumer<List<HKRawData>> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.get("raw_datas", null, onSuccess, onFailure);
+        HKManager.defaultInstance.getRawDataList(onSuccess, onFailure);
     }
 
     /**
@@ -49,6 +48,6 @@ public class HKRawData
         params.put("session", session.identifier);
         params.put("device", device.identifier);
 
-        HKManager.defaultInstance.upload("raw_datas", params, file, onProgress, onSuccess, onFailure);
+        HKManager.defaultInstance.uploadRawDatas(params, file, onProgress, onSuccess, onFailure);
     }
 }

@@ -1,9 +1,6 @@
 package com.surfin.hubkit;
 
 import android.support.annotation.Nullable;
-import android.util.Pair;
-
-import com.surfin.hubkit.models.HKToken;
 
 import java.util.HashMap;
 import java.util.Map;

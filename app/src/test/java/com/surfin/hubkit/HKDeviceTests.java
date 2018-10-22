@@ -1,7 +1,6 @@
 package com.surfin.hubkit;
 
 import com.google.gson.Gson;
-import com.surfin.hubkit.models.HKDevice;
 
 import org.junit.Before;
 import org.junit.Test;
