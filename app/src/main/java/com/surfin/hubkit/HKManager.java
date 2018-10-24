@@ -75,91 +75,91 @@ public class HKManager {
         ProgressRequestBody fileBody = new ProgressRequestBody(file.file, file.mimetype, callback);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.filename, fileBody);
 
-        Call<HKRawData> call = buildService(Services.uploadRawData.class).load(filePart, params);
+        Call<HKRawData> call = buildService(Services.uploadRawData.class).load(config.getVersion().version, filePart, params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void auth(Map<String, String> params, Consumer<HKToken> onSuccess, Consumer<Error> onError) {
-        Call<HKToken> call = buildService(Services.auth.class).load(params);
+        Call<HKToken> call = buildService(Services.auth.class).load(config.getVersion().version, params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getMe(Consumer<HKAccount> onSuccess, Consumer<Error> onError) {
-        Call<HKAccount> call = buildService(Services.getMe.class).load();
+        Call<HKAccount> call = buildService(Services.getMe.class).load(config.getVersion().version);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getActivity(String identifier, Consumer<HKActivity> onSuccess, Consumer<Error> onError) {
-        Call<HKActivity> call = buildService(Services.getActivity.class).load(identifier);
+        Call<HKActivity> call = buildService(Services.getActivity.class).load(config.getVersion().version,identifier);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getActivityList(Consumer<List<HKActivity>> onSuccess, Consumer<Error> onError) {
-        Call<List<HKActivity>> call = buildService(Services.getActivityList.class).load();
+        Call<List<HKActivity>> call = buildService(Services.getActivityList.class).load(config.getVersion().version);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getDevice(String identifier, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
-        Call<HKDevice> call = buildService(Services.getDevice.class).load(identifier);
+        Call<HKDevice> call = buildService(Services.getDevice.class).load(config.getVersion().version,identifier);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void createDevice(Map<String, String> params, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
-        Call<HKDevice> call = buildService(Services.postDevice.class).load(params);
+        Call<HKDevice> call = buildService(Services.postDevice.class).load(config.getVersion().version,params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void updateDevice(String identifier, Map<String, String> params, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
-        Call<HKDevice> call = buildService(Services.updateDevice.class).load(identifier, params);
+        Call<HKDevice> call = buildService(Services.updateDevice.class).load(config.getVersion().version,identifier, params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void activateDevice(String identifier, Consumer<HKDevice> onSuccess, Consumer<Error> onError) {
-        Call<HKDevice> call = buildService(Services.patchDevice.class).load(identifier);
+        Call<HKDevice> call = buildService(Services.patchDevice.class).load(config.getVersion().version,identifier);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getProject(String identifier, Consumer<HKProject> onSuccess, Consumer<Error> onError) {
-        Call<HKProject> call = buildService(Services.getProject.class).load(identifier);
+        Call<HKProject> call = buildService(Services.getProject.class).load(config.getVersion().version,identifier);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getRawDataList(Consumer<List<HKRawData>> onSuccess, Consumer<Error> onError) {
-        Call<List<HKRawData>> call = buildService(Services.getRawDataList.class).load();
+        Call<List<HKRawData>> call = buildService(Services.getRawDataList.class).load(config.getVersion().version);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getSession(String identifier, Consumer<HKSession> onSuccess, Consumer<Error> onError) {
-        Call<HKSession> call = buildService(Services.getSession.class).load(identifier);
+        Call<HKSession> call = buildService(Services.getSession.class).load(config.getVersion().version,identifier);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void getSessionList(Consumer<List<HKSession>> onSuccess, Consumer<Error> onError) {
-        Call<List<HKSession>> call = buildService(Services.getSessionList.class).load();
+        Call<List<HKSession>> call = buildService(Services.getSessionList.class).load(config.getVersion().version);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void postSession(Map<String, String> params, Consumer<HKSession> onSuccess, Consumer<Error> onError) {
-        Call<HKSession> call = buildService(Services.postSession.class).load(params);
+        Call<HKSession> call = buildService(Services.postSession.class).load(config.getVersion().version,params);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
 
     void updateSession(String identifier, Consumer<HKSession> onSuccess, Consumer<Error> onError) {
-        Call<HKSession> call = buildService(Services.patchSession.class).load(identifier);
+        Call<HKSession> call = buildService(Services.patchSession.class).load(config.getVersion().version,identifier);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }
