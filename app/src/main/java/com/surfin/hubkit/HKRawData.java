@@ -31,8 +31,8 @@ public class HKRawData
     /**
      * Get all raw data
      */
-    public static void  all(@NonNull Consumer<List<HKRawData>> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.getRawDataList(onSuccess, onFailure);
+    public static void     get(@NonNull String identifier,@NonNull Consumer<HKRawData> onSuccess, @NonNull Consumer<Error> onFailure) {
+        HKManager.defaultInstance.getRawData(identifier, onSuccess, onFailure);
     }
 
     /**

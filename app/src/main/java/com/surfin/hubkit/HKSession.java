@@ -44,13 +44,6 @@ public class HKSession
     public Date capturedAt;
 
     /**
-     * Get all sessions
-     */
-    public static void  all(@NonNull Consumer<List<HKSession>> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.getSessionList(onSuccess, onFailure);
-    }
-
-    /**
      * Create new session
      */
     public static void  create(@NonNull HKProject project, @NonNull String metas, @NonNull Date capturedAt, @NonNull Consumer<HKSession> onSuccess, @NonNull Consumer<Error> onFailure) {

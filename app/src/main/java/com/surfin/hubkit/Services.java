@@ -56,7 +56,7 @@ class Services {
         );
     }
 
-    public interface postDevice {
+    public interface createDevice {
         @FormUrlEncoded
         @POST("/api/{v}/devices")
         Call<HKDevice> load(
@@ -67,7 +67,7 @@ class Services {
 
     public interface updateDevice {
         @FormUrlEncoded
-        @POST("/api/{v}/devices/{id}")
+        @PATCH("/api/{v}/devices/{id}")
         Call<HKDevice> load(
                 @Path("v") String version,
                 @Path("id") String id,
@@ -75,7 +75,7 @@ class Services {
         );
     }
 
-    public interface patchDevice {
+    public interface activateDevice {
         @PATCH("/api/{v}/devices/{id}/activate")
         Call<HKDevice> load(
                 @Path("v") String version,
@@ -91,10 +91,22 @@ class Services {
         );
     }
 
-    public interface getRawDataList {
-        @GET("/api/{v}/raw_datas")
-        Call<List<HKRawData>> load(
-                @Path("v") String version
+    public interface getRawData {
+        @GET("/api/{v}/raw_datas/{id}")
+        Call<HKRawData> load(
+                @Path("v") String version,
+                @Path("id") String id
+        );
+    }
+
+    public interface uploadRawData {
+        @Multipart
+        @FormUrlEncoded
+        @POST("/api/{v}/raw_datas")
+        Call<HKRawData> load(
+                @Path("v") String version,
+                @Part MultipartBody.Part filePart,
+                @FieldMap Map<String, String> params
         );
     }
 
@@ -103,13 +115,6 @@ class Services {
         Call<HKSession> load(
                 @Path("v") String version,
                 @Path("id") String id
-        );
-    }
-
-    public interface getSessionList {
-        @GET("/api/{v}/sessions")
-        Call<List<HKSession>> load(
-                @Path("v") String version
         );
     }
 
@@ -127,17 +132,6 @@ class Services {
         Call<HKSession> load(
                 @Path("v") String version,
                 @Url String url
-        );
-    }
-
-    public interface uploadRawData {
-        @Multipart
-        @FormUrlEncoded
-        @POST("/api/{v}/raw_datas")
-        Call<HKRawData> load(
-                @Path("v") String version,
-                @Part MultipartBody.Part filePart,
-                @FieldMap Map<String, String> params
         );
     }
 }
