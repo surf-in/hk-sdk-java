@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -36,7 +35,7 @@ public class HKRawData
     }
 
     /**
-     * Create a new session
+     * upload raw datas
      */
     public static void  create(@NonNull HKSession session,
                                @NonNull HKDevice device,

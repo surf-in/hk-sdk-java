@@ -1,6 +1,10 @@
 package com.surfin.hubkit;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.webkit.MimeTypeMap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,9 +14,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +35,7 @@ public class HKManager {
 
     private HKConfig    config = new HKConfig(HKConfig.ApiEnvironment.DEV, HKConfig.ApiVersion.V1);
     private HKToken     tokens = null;
+    private HKProject   project = null;
 
     public HKManager() {
         buildRetrofitInstance();
@@ -62,6 +69,30 @@ public class HKManager {
     public void     setToken(HKToken token) {
         this.tokens = token;
         buildRetrofitInstance();
+    }
+
+    /**
+     * Fetch project from ID and set it as currently active project
+     *
+     * @param identifier project ID
+     */
+    public void     setProject(String identifier, @NonNull Consumer<HKProject> onSuccess, @NonNull Consumer<Error> onFailure) {
+        getProject(identifier, new Consumer<HKProject>() {
+            @Override
+            public void accept(HKProject hkProject) {
+                project = hkProject;
+                onSuccess.accept(hkProject);
+            }
+        }, onFailure);
+    }
+
+    /**
+     * Current active project
+     *
+     * @return HKProject object
+     */
+    HKProject       getProject() {
+        return project;
     }
 
     /*
@@ -132,10 +163,15 @@ public class HKManager {
 
     void uploadRawDatas(Map<String, String> params, HKFile file, Consumer<Double> onProgress, Consumer<HKRawData> onSuccess, Consumer<Error> onError) {
         ProgressRequestBody.UploadCallbacks callback = onProgress::accept;
-        ProgressRequestBody fileBody = new ProgressRequestBody(file.file, file.mimetype, callback);
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.filename, fileBody);
 
-        Call<HKRawData> call = buildService(Services.uploadRawData.class).load(config.getVersion().version, filePart, params);
+        ProgressRequestBody fileBody = new ProgressRequestBody(file, "application/octet-stream", callback);
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
+
+        RequestBody session = RequestBody.create(MediaType.parse("text/plain"), params.get("session"));
+        RequestBody device = RequestBody.create(MediaType.parse("text/plain"), params.get("device"));
+
+//        Call<HKRawData> call = buildService(Services.uploadRawData.class).load(config.getVersion().version, filePart, params);
+        Call<HKRawData> call = buildService(Services.uploadRawData.class).load(config.getVersion().version, filePart, session, device);
 
         call.enqueue(createAPICallback(onSuccess, onError));
     }

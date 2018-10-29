@@ -46,7 +46,12 @@ public class HKSession
     /**
      * Create new session
      */
-    public static void  create(@NonNull HKProject project, @NonNull String metas, @NonNull Date capturedAt, @NonNull Consumer<HKSession> onSuccess, @NonNull Consumer<Error> onFailure) {
+    public static void  create(@NonNull String metas, @NonNull Date capturedAt, @NonNull Consumer<HKSession> onSuccess, @NonNull Consumer<Error> onFailure) {
+        HKProject project = HKManager.defaultInstance.getProject();
+        if (project == null) {
+            onFailure.accept(new Error("Call setProject() first"));
+            return;
+        }
         Map<String, String> params = new HashMap<>();
         params.put("project", project.identifier);
         params.put("metas", metas);

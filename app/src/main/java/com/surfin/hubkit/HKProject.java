@@ -31,11 +31,4 @@ public class HKProject
      */
     @SerializedName("devices")
     public List<HKDevice>   devices;
-
-    /**
-     * Get project for the given identifier
-     */
-    public static void  get(@NonNull String identifier, @NonNull Consumer<HKProject> onSuccess, @NonNull Consumer<Error> onFailure) {
-        HKManager.defaultInstance.getProject(identifier, onSuccess, onFailure);
-    }
 }

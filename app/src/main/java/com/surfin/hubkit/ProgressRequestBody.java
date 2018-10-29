@@ -13,7 +13,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 
-public class ProgressRequestBody
+class ProgressRequestBody
         extends RequestBody
 {
 

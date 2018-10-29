@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -101,12 +102,12 @@ class Services {
 
     public interface uploadRawData {
         @Multipart
-        @FormUrlEncoded
         @POST("/api/{v}/raw_datas")
         Call<HKRawData> load(
                 @Path("v") String version,
                 @Part MultipartBody.Part filePart,
-                @FieldMap Map<String, String> params
+                @Part("session") RequestBody sessionId,
+                @Part("device") RequestBody deviceId
         );
     }
 
