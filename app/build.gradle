@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.github.surf-in:hk-sdk-java'
+group='com.github.surf-in'
 
 android {
     compileSdkVersion 27
