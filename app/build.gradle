@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.gitlab.leochazal:hk-sdk-java:v1'
+group='com.gitlab.hubkit:hk-sdk-java:Tag'
 
 android {
     compileSdkVersion 27
